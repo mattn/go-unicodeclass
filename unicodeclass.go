@@ -1,7 +1,9 @@
 package unicodeclass
 
 import (
+	"io"
 	"unicode"
+	"unicode/utf8"
 )
 
 type Class int
@@ -233,4 +235,30 @@ func Is(r rune) Class {
 		}
 	}
 	return 2 // word
+}
+
+func UnicodeSplit(data []byte, atEOF bool) (int, []byte, error) {
+	bpos := 0
+	b := data
+	last := Invalid
+	for {
+		r, i := utf8.DecodeRune(b)
+		if i == 0 {
+			break
+		}
+		clazz := Is(r)
+		if last == -1 {
+			last = clazz
+		} else if clazz != last {
+			last = clazz
+			break
+		}
+		bpos += i
+		b = b[i:]
+	}
+	var err error
+	if atEOF {
+		err = io.EOF
+	}
+	return bpos, data[:bpos], err
 }
