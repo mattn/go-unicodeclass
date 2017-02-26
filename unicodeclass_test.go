@@ -38,3 +38,19 @@ func TestUnicodeSplit(t *testing.T) {
 		t.Fatalf("want %v but %v", want, got)
 	}
 }
+
+func TestSplit(t *testing.T) {
+	tests := []struct {
+		s    string
+		want []string
+	}{
+		{"本日は晴天なり", []string{"本日", "は", "晴天", "なり"}},
+		{"佐藤B作", []string{"佐藤", "B", "作"}},
+	}
+	for _, test := range tests {
+		got := Split(test.s)
+		if !reflect.DeepEqual(got, test.want) {
+			t.Fatalf("want %v but %v for %q", test.want, got, test.s)
+		}
+	}
+}

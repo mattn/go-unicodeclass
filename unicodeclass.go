@@ -1,7 +1,9 @@
 package unicodeclass
 
 import (
+	"bufio"
 	"io"
+	"strings"
 	"unicode"
 	"unicode/utf8"
 )
@@ -235,6 +237,16 @@ func Is(r rune) Class {
 		}
 	}
 	return 2 // word
+}
+
+func Split(s string) []string {
+	scan := bufio.NewScanner(strings.NewReader(s))
+	scan.Split(SplitClass)
+	var words []string
+	for scan.Scan() {
+		words = append(words, scan.Text())
+	}
+	return words
 }
 
 func SplitClass(data []byte, atEOF bool) (int, []byte, error) {
