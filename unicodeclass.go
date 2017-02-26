@@ -7,6 +7,7 @@ import (
 type Class int
 
 const (
+	Invalid         Class = -1
 	Blank           Class = 0
 	Punctation      Class = 1
 	Word            Class = 2
