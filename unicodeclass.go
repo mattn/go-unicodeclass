@@ -237,7 +237,7 @@ func Is(r rune) Class {
 	return 2 // word
 }
 
-func UnicodeSplit(data []byte, atEOF bool) (int, []byte, error) {
+func SplitClass(data []byte, atEOF bool) (int, []byte, error) {
 	bpos := 0
 	b := data
 	last := Invalid

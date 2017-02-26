@@ -28,7 +28,7 @@ func TestIs(t *testing.T) {
 
 func TestUnicodeSplit(t *testing.T) {
 	scan := bufio.NewScanner(strings.NewReader("本日は晴天なり"))
-	scan.Split(UnicodeSplit)
+	scan.Split(SplitClass)
 	var got []string
 	for scan.Scan() {
 		got = append(got, scan.Text())
