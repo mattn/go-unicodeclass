@@ -2,7 +2,6 @@ package unicodeclass
 
 import (
 	"bufio"
-	"io"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -250,6 +249,9 @@ func Split(s string) []string {
 }
 
 func SplitClass(data []byte, atEOF bool) (int, []byte, error) {
+	if atEOF && len(data) == 0 {
+		return 0, nil, nil
+	}
 	bpos := 0
 	b := data
 	last := Invalid
@@ -257,6 +259,9 @@ func SplitClass(data []byte, atEOF bool) (int, []byte, error) {
 		r, i := utf8.DecodeRune(b)
 		if i == 0 {
 			break
+		}
+		if !atEOF && !utf8.FullRune(b) {
+			return 0, nil, nil
 		}
 		clazz := Is(r)
 		if last == -1 {
@@ -268,9 +273,5 @@ func SplitClass(data []byte, atEOF bool) (int, []byte, error) {
 		bpos += i
 		b = b[i:]
 	}
-	var err error
-	if atEOF {
-		err = io.EOF
-	}
-	return bpos, data[:bpos], err
+	return bpos, data[:bpos], nil
 }
