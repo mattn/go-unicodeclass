@@ -260,9 +260,6 @@ func SplitClass(data []byte, atEOF bool) (int, []byte, error) {
 		if i == 0 {
 			break
 		}
-		if !atEOF && !utf8.FullRune(b) {
-			return 0, nil, nil
-		}
 		clazz := Is(r)
 		if last == -1 {
 			last = clazz
@@ -272,6 +269,9 @@ func SplitClass(data []byte, atEOF bool) (int, []byte, error) {
 		}
 		bpos += i
 		b = b[i:]
+	}
+	if !atEOF && !utf8.FullRune(b) {
+		return 0, nil, nil
 	}
 	return bpos, data[:bpos], nil
 }
