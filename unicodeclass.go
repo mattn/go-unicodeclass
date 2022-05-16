@@ -216,7 +216,7 @@ var emoji = []struct {
 
 func Is(r rune) Class {
 	if r < 0x100 {
-		if r == ' ' || r == '\t' || r == 0 || r == 0xa0 {
+		if r == ' ' || r == '\t' || r == 0 || r == '\r' || r == '\n' {
 			return 0 // blank
 		}
 		if !unicode.IsPunct(r) {
